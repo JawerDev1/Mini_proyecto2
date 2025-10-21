@@ -69,8 +69,11 @@ public class CombateGUI extends JFrame {
         enemigo.recibirDanio(danio);
         mostrarMensaje(heroe.getNombre() + " ataca a " + enemigo.getNombre() + " causando " + danio + " de daño.\n");
 
+        Sonido.reproducir("sonidos/ataque.wav");
+
         if (!enemigo.estaVivo()) {
             mostrarMensaje(enemigo.getNombre() + " ha sido derrotado.\n");
+            Sonido.reproducir("sonidos/derrota.wav");
         }
 
         verificarMinijefe();
@@ -96,6 +99,7 @@ public class CombateGUI extends JFrame {
         int curacion = 20;
         heroe.curar(curacion);
         mostrarMensaje(heroe.getNombre() + " se cura " + curacion + " puntos de vida.\n");
+        Sonido.reproducir("sonidos/curacion.wav");
 
         turnoEnemigo();
         pasarTurno();
@@ -117,6 +121,8 @@ public class CombateGUI extends JFrame {
         // El enemigo cae dormido
         enemigo.dormir();
         mostrarMensaje(heroe.getNombre() + " lanza hechizo de sueño sobre " + enemigo.getNombre() + ".\n");
+
+        Sonido.reproducir("sonidos/hechizo.wav");
 
         turnoEnemigo();
         pasarTurno();
