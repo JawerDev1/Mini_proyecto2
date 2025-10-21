@@ -81,6 +81,7 @@ public class CombateGUI extends JFrame {
 
         if (todosMuertos(enemigos)) {
             mostrarMensaje("Los héroes han ganado la batalla.\n");
+            Sonido.reproducir("sonidos/victoria.wav");
             desactivarBotones();
             return;
         }
@@ -203,7 +204,7 @@ public class CombateGUI extends JFrame {
     // 🔹 Método para verificar si el MiniJefe debe aparecer
     private void verificarMinijefe() {
         if (!minijefeDerrotado && enemigosDerrotados() >= 3) {
-            MiniJefe mini = new MiniJefe("Dragón Minijefe", 150, 50, 30, 15, 8);
+            MiniJefe mini = new MiniJefe("Dragón Minijefe", 150, 50, 20, 15, 8);
             enemigos = new Enemigo[] { mini }; // reemplaza a los enemigos normales
             mostrarMensaje("¡Un MiniJefe aparece: " + mini.getNombre() + "!\n");
             minijefeDerrotado = true;
