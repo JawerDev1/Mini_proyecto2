@@ -73,10 +73,11 @@ public class CombateGUI extends JFrame {
 
         if (!enemigo.estaVivo()) {
             mostrarMensaje(enemigo.getNombre() + " ha sido derrotado.\n");
-            Sonido.reproducir("sonidos/derrota.wav");
+
         }
 
         verificarMinijefe();
+        mostrarEstadoActual();
 
         if (todosMuertos(enemigos)) {
             mostrarMensaje("Los héroes han ganado la batalla.\n");
@@ -99,7 +100,10 @@ public class CombateGUI extends JFrame {
         int curacion = 20;
         heroe.curar(curacion);
         mostrarMensaje(heroe.getNombre() + " se cura " + curacion + " puntos de vida.\n");
-        Sonido.reproducir("sonidos/curacion.wav");
+        Sonido.reproducir("sonidos/curar.wav");
+
+        mostrarEstadoActual();
+
 
         turnoEnemigo();
         pasarTurno();
@@ -123,6 +127,9 @@ public class CombateGUI extends JFrame {
         mostrarMensaje(heroe.getNombre() + " lanza hechizo de sueño sobre " + enemigo.getNombre() + ".\n");
 
         Sonido.reproducir("sonidos/hechizo.wav");
+
+        mostrarEstadoActual();
+
 
         turnoEnemigo();
         pasarTurno();
@@ -159,6 +166,7 @@ public class CombateGUI extends JFrame {
 
         if (todosMuertos(heroes)) {
             mostrarMensaje("Los enemigos han ganado la batalla.\n");
+            Sonido.reproducir("sonidos/derrota.wav");
             desactivarBotones();
         }
     }
@@ -195,7 +203,7 @@ public class CombateGUI extends JFrame {
     // 🔹 Método para verificar si el MiniJefe debe aparecer
     private void verificarMinijefe() {
         if (!minijefeDerrotado && enemigosDerrotados() >= 3) {
-            MiniJefe mini = new MiniJefe("Dragón Minijefe", 180, 50, 30, 15, 8);
+            MiniJefe mini = new MiniJefe("Dragón Minijefe", 150, 50, 30, 15, 8);
             enemigos = new Enemigo[] { mini }; // reemplaza a los enemigos normales
             mostrarMensaje("¡Un MiniJefe aparece: " + mini.getNombre() + "!\n");
             minijefeDerrotado = true;
@@ -211,6 +219,19 @@ public class CombateGUI extends JFrame {
         return count;
     }
 
+    // Muestra el estado actual de todos los héroes y enemigos
+    private void mostrarEstadoActual() {
+        mostrarMensaje("\n--- Estado actual ---\n");
+        for (Heroe h : heroes) {
+            mostrarMensaje(h.getNombre() + " (HP: " + h.getHp() + ")\n");
+        }
+        for (Enemigo e : enemigos) {
+            mostrarMensaje(e.getNombre() + " (HP: " + e.getHp() + ")\n");
+        }   
+        mostrarMensaje("---------------------\n\n");
+    }
+
+
     public static void main(String[] args) {
         Heroe[] heroes = {
                 new Heroe(TipoHeroe.HEROE, "Andres", 120, 50, 20, 15, 12),
@@ -220,10 +241,10 @@ public class CombateGUI extends JFrame {
         };
 
         Enemigo[] enemigos = {
-                new Enemigo(TipoEnemigo.SLIME, "Slime Azul", 80, 10, 12, 8, 10),
-                new Enemigo(TipoEnemigo.GOBLIN, "Goblin", 100, 15, 14, 9, 11),
-                new Enemigo(TipoEnemigo.BRUJO, "Brujo", 90, 40, 10, 7, 13),
-                new Enemigo(TipoEnemigo.DRAGON, "Mini Jefe Dragon", 250, 50, 30, 20, 10)
+                new Enemigo(TipoEnemigo.SLIME, "Slime Azul", 50, 10, 12, 8, 10),
+                new Enemigo(TipoEnemigo.GOBLIN, "Goblin", 80, 15, 14, 9, 11),
+                new Enemigo(TipoEnemigo.BRUJO, "Brujo", 100, 40, 10, 7, 13),
+                new Enemigo(TipoEnemigo.DRAGON, "Mini Dragon", 120, 50, 30, 20, 10)
         };
 
         SwingUtilities.invokeLater(() -> new CombateGUI(heroes, enemigos).setVisible(true));
