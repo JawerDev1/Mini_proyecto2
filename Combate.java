@@ -1,5 +1,4 @@
 import java.util.*;
-
 import javax.swing.JOptionPane;
 
 public class Combate {
@@ -15,20 +14,22 @@ public class Combate {
 
     public void iniciarCombate() {
         System.out.println("Comienza la batalla.");
-
         while (!todosMuertos(heroes) && !todosMuertos(enemigos)) {
-            List<Personaje> todos = new ArrayList<>();
 
-            for (Heroe h : heroes) if (h.estaVivo()) todos.add(h);
-            for (Enemigo e : enemigos) if (e.estaVivo()) todos.add(e);
+            List<Personaje> todos = new ArrayList<>();
+            for (Heroe h : heroes)
+                if (h.estaVivo()) todos.add(h);
+            for (Enemigo e : enemigos)
+                if (e.estaVivo()) todos.add(e);
 
             Collections.sort(todos, (a, b) -> b.getVelocidad() - a.getVelocidad());
 
             for (Personaje personaje : todos) {
                 if (!personaje.estaVivo()) continue;
-
-                if (personaje instanceof Heroe) turnoHeroe((Heroe) personaje);
-                else turnoEnemigo((Enemigo) personaje);
+                if (personaje instanceof Heroe)
+                    turnoHeroe((Heroe) personaje);
+                else
+                    turnoEnemigo((Enemigo) personaje);
 
                 if (todosMuertos(heroes) || todosMuertos(enemigos)) break;
             }
@@ -54,15 +55,19 @@ public class Combate {
         System.out.println("3. Usar habilidad");
 
         int opcion = sc.nextInt();
+
         switch (opcion) {
             case 1:
                 Enemigo objetivo = elEnemigo();
-                if (objetivo != null) ejecutarAtaque(heroe, objetivo);
+                if (objetivo != null)
+                    ejecutarAtaque(heroe, objetivo);
                 break;
+
             case 2:
                 System.out.println(heroe.getNombre() + " se defiende.");
                 heroe.setDefensa(heroe.getDefensa() + 5);
                 break;
+
             case 3:
                 if (heroe.getHabilidades().isEmpty()) {
                     System.out.println("No tiene habilidades.");
@@ -92,32 +97,35 @@ public class Combate {
                     }
                 }
                 break;
+
             default:
-                System.out.println("Opcion invalida.");
+                System.out.println("Opción inválida.");
         }
     }
 
     private void turnoEnemigo(Enemigo enemigo) {
-
+        // Verifica si el enemigo está dormido
         if (enemigo.getEstado() == Estado.SUEÑO) {
             enemigo.intentarDespertar();
             if (enemigo.getEstado() == Estado.SUEÑO) {
-                JOptionPane.showMessageDialog(null, enemigo.getNombre() + " esta dormido y no actuo este turno");
+                JOptionPane.showMessageDialog(null, enemigo.getNombre() + " está dormido y no actúa este turno.");
                 return;
             }
         }
 
         Random r = new Random();
         Heroe objHeroe = heroes[r.nextInt(heroes.length)];
-        while (!objHeroe.estaVivo())
+        while (!objHeroe.estaVivo()) {
             objHeroe = heroes[r.nextInt(heroes.length)];
+        }
+
         ejecutarAtaque(enemigo, objHeroe);
     }
 
     private void ejecutarAtaque(Personaje atacante, Personaje objetivo) {
         int danio = atacante.getAtaque() - objetivo.getDefensa();
         if (danio < 0) danio = 0;
-        System.out.println(atacante.getNombre() + " ataca a " + objetivo.getNombre() + " causando " + danio + " de dano.");
+        System.out.println(atacante.getNombre() + " ataca a " + objetivo.getNombre() + " causando " + danio + " de daño.");
         objetivo.recibirDanio(danio);
         if (!objetivo.estaVivo())
             System.out.println(objetivo.getNombre() + " ha sido derrotado.");
@@ -131,7 +139,8 @@ public class Combate {
         int eleccion = sc.nextInt() - 1;
         if (eleccion >= 0 && eleccion < enemigos.length && enemigos[eleccion].estaVivo())
             return enemigos[eleccion];
-        System.out.println("Enemigo invalido.");
+
+        System.out.println("Enemigo inválido.");
         return null;
     }
 }
