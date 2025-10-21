@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 public class Combate {
     private Heroe[] heroes;
     private Enemigo[] enemigos;
@@ -96,6 +98,15 @@ public class Combate {
     }
 
     private void turnoEnemigo(Enemigo enemigo) {
+
+        if (enemigo.getEstado() == Estado.SUEÑO) {
+            enemigo.intentarDespertar();
+            if (enemigo.getEstado() == Estado.SUEÑO) {
+                JOptionPane.showMessageDialog(null, enemigo.getNombre() + " esta dormido y no actuo este turno");
+                return;
+            }
+        }
+
         Random r = new Random();
         Heroe objHeroe = heroes[r.nextInt(heroes.length)];
         while (!objHeroe.estaVivo())

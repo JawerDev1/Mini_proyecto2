@@ -1,18 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class CombateGUI extends JFrame {
-
     private Heroe[] heroes;
     private Enemigo[] enemigos;
     private JTextArea areaBatalla;
     private JButton btnAtacar;
     private JButton btnCurar;
-
-    private int turnoHeroe = 0; 
+    private JButton btnHechizoSueño;
+    private int turnoHeroe = 0;
     private Random random = new Random();
+    // Bandera para controlar si el minijefe ya apareció
+    private boolean minijefeDerrotado = false;
 
     public CombateGUI(Heroe[] heroes, Enemigo[] enemigos) {
         this.heroes = heroes;
@@ -33,8 +35,10 @@ public class CombateGUI extends JFrame {
         JPanel panelBotones = new JPanel();
         btnAtacar = new JButton("Atacar");
         btnCurar = new JButton("Curar");
+        btnHechizoSueño = new JButton("Hechizo Sueño");
         panelBotones.add(btnAtacar);
         panelBotones.add(btnCurar);
+        panelBotones.add(btnHechizoSueño);
         add(panelBotones, BorderLayout.SOUTH);
 
         mostrarMensaje("Comienza la batalla.\n");
@@ -42,6 +46,7 @@ public class CombateGUI extends JFrame {
 
         btnAtacar.addActionListener((ActionEvent e) -> realizarAtaqueHeroe());
         btnCurar.addActionListener((ActionEvent e) -> realizarCuracion());
+        btnHechizoSueño.addActionListener((ActionEvent e) -> lanzarHechizoSueño());
     }
 
     private void realizarAtaqueHeroe() {
@@ -58,7 +63,8 @@ public class CombateGUI extends JFrame {
         }
 
         int danio = heroe.getAtaque() - enemigo.getDefensa();
-        if (danio < 0) danio = 0;
+        if (danio < 0)
+            danio = 0;
 
         enemigo.recibirDanio(danio);
         mostrarMensaje(heroe.getNombre() + " ataca a " + enemigo.getNombre() + " causando " + danio + " de daño.\n");
@@ -66,6 +72,8 @@ public class CombateGUI extends JFrame {
         if (!enemigo.estaVivo()) {
             mostrarMensaje(enemigo.getNombre() + " ha sido derrotado.\n");
         }
+
+        verificarMinijefe();
 
         if (todosMuertos(enemigos)) {
             mostrarMensaje("Los héroes han ganado la batalla.\n");
@@ -93,10 +101,38 @@ public class CombateGUI extends JFrame {
         pasarTurno();
     }
 
+    private void lanzarHechizoSueño() {
+        Heroe heroe = heroes[turnoHeroe];
+        if (!heroe.estaVivo()) {
+            mostrarMensaje(heroe.getNombre() + " está derrotado y no puede lanzar hechizos.\n");
+            pasarTurno();
+            return;
+        }
+
+        Enemigo enemigo = enemigos[random.nextInt(enemigos.length)];
+        while (!enemigo.estaVivo()) {
+            enemigo = enemigos[random.nextInt(enemigos.length)];
+        }
+
+        // El enemigo cae dormido
+        enemigo.dormir();
+        mostrarMensaje(heroe.getNombre() + " lanza hechizo de sueño sobre " + enemigo.getNombre() + ".\n");
+
+        turnoEnemigo();
+        pasarTurno();
+    }
+
     private void turnoEnemigo() {
         Enemigo enemigo = enemigos[random.nextInt(enemigos.length)];
         while (!enemigo.estaVivo()) {
             enemigo = enemigos[random.nextInt(enemigos.length)];
+        }
+
+        if (enemigo.getEstado() == Estado.SUEÑO) {
+            enemigo.intentarDespertar();
+            if (enemigo.getEstado() == Estado.SUEÑO) {
+                return; // Sigue dormido, no actúa
+            }
         }
 
         Heroe heroe = heroes[random.nextInt(heroes.length)];
@@ -105,7 +141,8 @@ public class CombateGUI extends JFrame {
         }
 
         int danio = enemigo.getAtaque() - heroe.getDefensa();
-        if (danio < 0) danio = 0;
+        if (danio < 0)
+            danio = 0;
 
         heroe.recibirDanio(danio);
         mostrarMensaje(enemigo.getNombre() + " ataca a " + heroe.getNombre() + " causando " + danio + " de daño.\n");
@@ -125,7 +162,6 @@ public class CombateGUI extends JFrame {
         if (turnoHeroe >= heroes.length) {
             turnoHeroe = 0;
         }
-
         if (!todosMuertos(heroes) && !todosMuertos(enemigos)) {
             mostrarMensaje("Turno de " + heroes[turnoHeroe].getNombre() + ".\n");
         }
@@ -133,7 +169,8 @@ public class CombateGUI extends JFrame {
 
     private boolean todosMuertos(Personaje[] grupo) {
         for (Personaje p : grupo) {
-            if (p.estaVivo()) return false;
+            if (p.estaVivo())
+                return false;
         }
         return true;
     }
@@ -141,6 +178,7 @@ public class CombateGUI extends JFrame {
     private void desactivarBotones() {
         btnAtacar.setEnabled(false);
         btnCurar.setEnabled(false);
+        btnHechizoSueño.setEnabled(false);
     }
 
     private void mostrarMensaje(String mensaje) {
@@ -148,19 +186,38 @@ public class CombateGUI extends JFrame {
         areaBatalla.setCaretPosition(areaBatalla.getDocument().getLength());
     }
 
+    // 🔹 Método para verificar si el MiniJefe debe aparecer
+    private void verificarMinijefe() {
+        if (!minijefeDerrotado && enemigosDerrotados() >= 3) {
+            MiniJefe mini = new MiniJefe("Dragón Minijefe", 180, 50, 30, 15, 8);
+            enemigos = new Enemigo[] { mini }; // reemplaza a los enemigos normales
+            mostrarMensaje("¡Un MiniJefe aparece: " + mini.getNombre() + "!\n");
+            minijefeDerrotado = true;
+        }
+    }
+
+    // 🔹 Contar enemigos derrotados
+    private int enemigosDerrotados() {
+        int count = 0;
+        for (Enemigo e : enemigos)
+            if (!e.estaVivo())
+                count++;
+        return count;
+    }
+
     public static void main(String[] args) {
         Heroe[] heroes = {
-            new Heroe(TipoHeroe.HEROE, "Andres", 120, 50, 20, 15, 12),
-            new Heroe(TipoHeroe.HEROE, "Yangus", 150, 20, 25, 10, 8),
-            new Heroe(TipoHeroe.HEROE, "Jessica", 100, 80, 15, 10, 14),
-            new Heroe(TipoHeroe.HEROE, "Angelo", 110, 60, 18, 12, 13)
+                new Heroe(TipoHeroe.HEROE, "Andres", 120, 50, 20, 15, 12),
+                new Heroe(TipoHeroe.HEROE, "Yangus", 150, 20, 25, 10, 8),
+                new Heroe(TipoHeroe.HEROE, "Jessica", 100, 80, 15, 10, 14),
+                new Heroe(TipoHeroe.HEROE, "Angelo", 110, 60, 18, 12, 13)
         };
 
         Enemigo[] enemigos = {
-            new Enemigo(TipoEnemigo.SLIME, "Slime Azul", 80, 10, 12, 8, 10),
-            new Enemigo(TipoEnemigo.GOBLIN, "Goblin", 100, 15, 14, 9, 11),
-            new Enemigo(TipoEnemigo.BRUJO, "Brujo", 90, 40, 10, 7, 13),
-            new Enemigo(TipoEnemigo.DRAGON, "Dragon", 200, 30, 25, 18, 6)
+                new Enemigo(TipoEnemigo.SLIME, "Slime Azul", 80, 10, 12, 8, 10),
+                new Enemigo(TipoEnemigo.GOBLIN, "Goblin", 100, 15, 14, 9, 11),
+                new Enemigo(TipoEnemigo.BRUJO, "Brujo", 90, 40, 10, 7, 13),
+                new Enemigo(TipoEnemigo.DRAGON, "Mini Jefe Dragon", 250, 50, 30, 20, 10)
         };
 
         SwingUtilities.invokeLater(() -> new CombateGUI(heroes, enemigos).setVisible(true));

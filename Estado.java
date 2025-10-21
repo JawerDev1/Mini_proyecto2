@@ -1,6 +1,6 @@
-public enum Estado {
-    VIVO,
-    MUERTO,
-    ENVENENADO,
-    PARALIZADO
-}
+public enum Estado {  
+    VIVO, 
+    MUERTO, 
+    ENVENENADO, 
+    PARALIZADO, 
+    SUEÑO }

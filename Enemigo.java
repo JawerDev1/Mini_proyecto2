@@ -18,4 +18,9 @@ public class Enemigo extends Personaje {
                 " | VEL: " + getVelocidad());
         System.out.println();
     }
+
+    public String atacar(Heroe objetivo) { 
+        int danio=getAtaque() -objetivo.getDefensa(); 
+        if (danio<0) danio=0; objetivo.recibirDanio(danio); 
+        return getNombre() +" ataca a "+objetivo.getNombre() +" causando "+danio+" de daño.\n"; }
 }
