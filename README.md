@@ -1,71 +1,73 @@
-# 🐉 Mini Proyecto 2 - Dragon Quest  
-### Universidad del Valle  
-**Asignatura:** Programación Orientada a Eventos  
-**Lenguaje:** Java (POO + Swing)  
+Dragon Quest VIII           
 
----
+Kevin Andres Rosero Romo – 2459554-2724
 
-## 👥 Integrantes del grupo
-| Nombre                         | Rol / Aporte principal                                   | Código       |
-|--------------------------------|----------------------------------------------------------|--------------|
-| **Kevin Andrés Rosero Romo**   | Interfaz grafica, Lógica base del combate y desarrollo de clases principales | 2459554-2724 |
-| **Jhon Jawer Cuero Gómez**     | Interfaz gráfica, sistema de sonido y desarrollo del Mini Jefe | 2459544-2724 |
+ Actualización y mejoras
 
+Esta versión del código representa una actualización respecto a la versión inicial, con varias mejoras para asemejarse más al juego original y mejorar la sostenibilidad del código:
 
----
+1. Mejoras en la estructura del código
 
-## 🧩 Descripción general del proyecto
+Se reorganizó el proyecto en clases modulares (Personaje, Jugador, Enemigo, Juego) para cumplir mejor con principios de programación orientada a objetos.
 
-Este proyecto implementa un **sistema de combate tipo RPG (Dragon Quest)** utilizando **Java** y **Swing**.  
-El objetivo principal es aplicar los principios de **Programación Orientada a Objetos (POO)** y **manejo de eventos gráficos** en un entorno interactivo.
+Se añadieron enums (TipoHeroe, TipoEnemigo, Estado, TipoPersonaje) para manejar los tipos de personajes y estados de manera más clara y escalable.
 
-Los jugadores controlan un grupo de héroes que se enfrentan a varios enemigos en turnos, utilizando ataques, curaciones y habilidades especiales.  
-A medida que avanza la batalla, aparece un **Mini Jefe** con una habilidad especial.
+Se implementaron métodos bien definidos para ataques, habilidades especiales y manejo de estados alterados (DORMIDO), lo que hace el juego más robusto y sostenible a largo plazo.
 
----
+2. Héroes y habilidades
 
-## 🧱 Arquitectura del proyecto
+Héroes disponibles:
 
-El proyecto está dividido en **módulos y clases** bien organizadas que reflejan los conceptos de herencia, encapsulamiento y polimorfismo.
+Heroe: Cura básica (12 HP, consume 3 MP)
 
-### 🔸 Clases principales
+Angelo: Cura avanzada (15 HP, consume 4 MP)
 
-| Clase | Descripción |
-|--------|-------------|
-| **Personaje.java** | Clase abstracta base para héroes y enemigos. Contiene atributos comunes como HP, MP, ataque, defensa y velocidad. |
-| **Heroe.java** | Representa a los héroes controlados por el jugador. Puede atacar, curarse y usar habilidades. |
-| **Enemigo.java** | Representa a los enemigos comunes. Tiene métodos de ataque simples. |
-| **Combate.java / CombateGUI.java** | Controlan la lógica de turnos y la interfaz gráfica del combate. |
-| **MiniJefe.java** | Nuevo tipo de enemigo con habilidad especial (ataque doble). |
-| **Habilidad.java** | Define las habilidades con nombre, tipo (ataque/curación) y costo de MP. |
-| **Sonido.java** | Permite reproducir efectos de sonido durante las acciones del combate. |
-| **Tipos y Enums** | `TipoHeroe`, `TipoEnemigo`, `TipoHabilidad`, `Estado` organizan los posibles valores de cada categoría. |
+Jessica: Frizz (daño mágico 10–15, consume 4 MP)
 
----
+Yangus: Golpe poderoso (+50% daño, 30% probabilidad de acertar)
 
-## 🎮 Funcionalidades principales
+Nota: Cada héroe solo puede usar su habilidad especial correspondiente.
 
-✅ Sistema de combate por turnos.  
-✅ Ataques físicos, curaciones y hechizos.  
-✅ Aparición automática de un **Mini Jefe** después de derrotar tres enemigos.  
-✅ **Efectos de sonido** en cada acción (ataque, curación, derrota, hechizo).  
-✅ Visualización del **HP actual** de héroes y enemigos después de cada acción.  
-✅ Interfaz gráfica sencilla con botones para las acciones principales.  
+3. Enemigos y mini jefe
 
----
+Enemigos clásicos agregados: Slime, Dracky, PatyPunk, Spiked Hare.
 
-## 🧰 Tecnologías utilizadas
+Mini jefe: Terror Tabby
 
-- **Java 17+**
-- **Swing** (Interfaz gráfica)
-- **POO** (Herencia, polimorfismo, encapsulamiento)
-- **javax.sound.sampled** (manejo de audio)
-- **Git / GitHub** (control de versiones en equipo)
+Tiene estadísticas superiores a los demás enemigos.
 
----
+Posee un ataque especial (Sleep Attack) que puede dormir a los héroes durante 2 turnos con un 90% de probabilidad.
 
-## ⚙️ Ejecución del proyecto
+También inflige daño adicional (4–7 HP).
 
-### 1️⃣ Compilar todos los archivos:
-```bash
-javac *.java
+Esto lo convierte en un enemigo desafiante y fiel al concepto de mini jefe del juego original.
+
+4. Mecánica del combate
+
+Los turnos se alternan entre héroes y enemigos.
+
+Los héroes pueden elegir entre ataque normal o habilidad especial.
+
+Los enemigos pueden usar ataques normales o habilidades especiales de forma aleatoria.
+
+Los personajes afectados por estados alterados (DORMIDO) pierden su turno hasta que el efecto desaparezca.
+
+El combate termina cuando todos los héroes o todos los enemigos son derrotados.
+
+5. Mejoras de estabilidad
+
+Se validan entradas del usuario y objetivos de ataques.
+
+Se controla el gasto de MP y curaciones para evitar errores de ejecución.
+
+El juego maneja correctamente la resolución de estados alterados y los turnos de los efectos especiales.
+
+Resumen
+
+Esta versión actualizada:
+
+Se acerca más al juego original en cuanto a personajes y enemigos.
+
+Introduce un mini jefe con mecánica especial de sueño.
+
+Optimiza la sostenibilidad y robustez del código para facilitar futuras ampliaciones.
