@@ -1,71 +1,112 @@
-# 🐉 Mini Proyecto 2 - Dragon Quest  
-### Universidad del Valle  
-**Asignatura:** Programación Orientada a Eventos  
-**Lenguaje:** Java (POO + Swing)  
+DRAGON QUEST – Módulo de Batalla
+Implementación del módulo de combate, interfaz gráfica y sistema de audio para un JRPG.
 
----
+Desarrollador
+Jhon Jawer Cuero Gomez
 
-## 👥 Integrantes del grupo
-| Nombre                         | Rol / Aporte principal                                   | Código       |
-|--------------------------------|----------------------------------------------------------|--------------|
-| **Kevin Andrés Rosero Romo**   | Interfaz grafica, Lógica base del combate y desarrollo de clases principales | 2459554-2724 |
-| **Jhon Jawer Cuero Gómez**     | Interfaz gráfica, sistema de sonido y desarrollo del Mini Jefe | 2459544-2724 |
+Componentes y Funcionalidades
+A continuación se describen las clases y archivos principales del proyecto.
 
+.gitignore
+Archivo de configuración para Git que ignora archivos compilados, temporales y específicos del IDE.
 
----
+Exclusiones clave:
 
-## 🧩 Descripción general del proyecto
+Archivos compilados (.class)
 
-Este proyecto implementa un **sistema de combate tipo RPG (Dragon Quest)** utilizando **Java** y **Swing**.  
-El objetivo principal es aplicar los principios de **Programación Orientada a Objetos (POO)** y **manejo de eventos gráficos** en un entorno interactivo.
+Carpetas de salida (/out, /bin)
 
-Los jugadores controlan un grupo de héroes que se enfrentan a varios enemigos en turnos, utilizando ataques, curaciones y habilidades especiales.  
-A medida que avanza la batalla, aparece un **Mini Jefe** con una habilidad especial.
+Archivos de configuración del IDE (.idea/, .vscode/)
 
----
+Archivos de sistema (.DS_Store, Thumbs.db)
 
-## 🧱 Arquitectura del proyecto
+Objetivo: Evitar subir archivos innecesarios al repositorio y mantener un control de versiones limpio.
 
-El proyecto está dividido en **módulos y clases** bien organizadas que reflejan los conceptos de herencia, encapsulamiento y polimorfismo.
+🎮 ControladorJuego.java
+Clase que maneja la lógica central del combate entre héroes y enemigos. Coordina turnos, ataques, efectos de estado (como “Sueño”) y determina el fin de la batalla.
 
-### 🔸 Clases principales
+Responsabilidades principales:
 
-| Clase | Descripción |
-|--------|-------------|
-| **Personaje.java** | Clase abstracta base para héroes y enemigos. Contiene atributos comunes como HP, MP, ataque, defensa y velocidad. |
-| **Heroe.java** | Representa a los héroes controlados por el jugador. Puede atacar, curarse y usar habilidades. |
-| **Enemigo.java** | Representa a los enemigos comunes. Tiene métodos de ataque simples. |
-| **Combate.java / CombateGUI.java** | Controlan la lógica de turnos y la interfaz gráfica del combate. |
-| **MiniJefe.java** | Nuevo tipo de enemigo con habilidad especial (ataque doble). |
-| **Habilidad.java** | Define las habilidades con nombre, tipo (ataque/curación) y costo de MP. |
-| **Sonido.java** | Permite reproducir efectos de sonido durante las acciones del combate. |
-| **Tipos y Enums** | `TipoHeroe`, `TipoEnemigo`, `TipoHabilidad`, `Estado` organizan los posibles valores de cada categoría. |
+Controlar el flujo de turnos.
 
----
+Validar si un personaje está vivo o dormido.
 
-## 🎮 Funcionalidades principales
+Aplicar ataques normales y especiales.
 
-✅ Sistema de combate por turnos.  
-✅ Ataques físicos, curaciones y hechizos.  
-✅ Aparición automática de un **Mini Jefe** después de derrotar tres enemigos.  
-✅ **Efectos de sonido** en cada acción (ataque, curación, derrota, hechizo).  
-✅ Visualización del **HP actual** de héroes y enemigos después de cada acción.  
-✅ Interfaz gráfica sencilla con botones para las acciones principales.  
+Detectar el fin de batalla (victoria o derrota).
 
----
+🪄 InterfazJuego.java
+Implementa la interfaz gráfica (GUI) de la batalla utilizando Java Swing.
 
-## 🧰 Tecnologías utilizadas
+Características:
 
-- **Java 17+**
-- **Swing** (Interfaz gráfica)
-- **POO** (Herencia, polimorfismo, encapsulamiento)
-- **javax.sound.sampled** (manejo de audio)
-- **Git / GitHub** (control de versiones en equipo)
+Panel de registro visual del combate (JTextArea con JScrollPane).
 
----
+Panel de acciones (JPanel) con botones y selección de enemigo (JComboBox).
 
-## ⚙️ Ejecución del proyecto
+Botones de acción: Atacar y Habilidad.
 
-### 1️⃣ Compilar todos los archivos:
-```bash
-javac *.java
+Muestra mensajes detallados de daño, HP restante, efectos y enemigos derrotados.
+
+Los turnos avanzan automáticamente al ejecutar una acción (sin botón "Pasar Turno").
+
+Objetivo: Proporcionar una experiencia visual interactiva y ordenada del combate.
+
+AudioPlayer.java
+Clase que gestiona la música del juego, implementando el patrón de diseño Singleton.
+
+Funciones principales:
+
+Reproduce música de fondo (musica_batalla.wav) en bucle.
+
+Detiene y reinicia la pista según el estado de la batalla (inicio o fin).
+
+Evita que se solapen varias pistas de audio.
+
+Permite cargar archivos de audio desde el sistema de archivos o el classpath del proyecto.
+
+Objetivo: Agregar ambientación sonora que se activa al iniciar la batalla y se detiene al finalizar.
+
+MenuPrincipal.java
+Ventana inicial y punto de entrada (main) de la aplicación. Permite al jugador navegar entre las opciones del sistema.
+
+Elementos del menú:
+
+Iniciar batalla: Lanza la InterfazJuego y activa la música a través del AudioPlayer.
+
+Créditos: Muestra información de los desarrolladores.
+
+Salir: Cierra la aplicación (System.exit(0)).
+
+Carpeta music/
+Contiene los archivos de audio del proyecto.
+
+music/musica_batalla.wav (Utilizada por AudioPlayer.java)
+
+Ejecución
+Abre el proyecto en tu IDE preferido (Eclipse, IntelliJ, VS Code con extensión de Java).
+
+Asegúrate de que la carpeta music/ esté en la raíz del proyecto. La estructura de archivos debe ser similar a esta:
+
+TuProyecto/
+├── src/
+│   ├── ControladorJuego.java
+│   ├── InterfazJuego.java
+│   ├── AudioPlayer.java
+│   ├── MenuPrincipal.java
+│   └── ... (otras clases)
+├── music/
+│   └── musica_batalla.wav
+└── README.md
+Ejecuta la clase MenuPrincipal.java.
+
+En el menú principal, presiona "Iniciar batalla" para comenzar.
+
+Tecnologías Utilizadas
+Java SE 17+
+
+Java Swing (javax.swing, java.awt) para la interfaz gráfica.
+
+javax.sound.sampled para el manejo de audio.
+
+Programación Orientada a Objetos (POO) y Programación Orientada a Eventos.
