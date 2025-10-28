@@ -8,8 +8,8 @@
 ## 👥 Integrantes del grupo
 | Nombre                         | Rol / Aporte principal                                   | Código       |
 |--------------------------------|----------------------------------------------------------|--------------|
-| **Kevin Andrés Rosero Romo**   | Interfaz grafica, Lógica base del combate y desarrollo de clases principales | 2459554-2724 |
-| **Jhon Jawer Cuero Gómez**     | Interfaz gráfica, sistema de sonido y desarrollo del Mini Jefe | 2459544-2724 |
+| **Kevin Andrés Rosero Romo**   | Lógica base del combate y desarrollo de clases principales | 2459554-2724 |
+| **Jhon Jawer Cuero Gómez**     | Interfaz gráfica y sistema de sonido | 2459544-2724 |
 
 
 ---
