@@ -1,0 +1,57 @@
+# -----------------------------
+# IGNORAR ARCHIVOS DE COMPILACIÓN JAVA
+# -----------------------------
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# -----------------------------
+# IGNORAR DIRECTORIOS DE BUILD / OUT
+# -----------------------------
+/bin/
+/build/
+/out/
+/target/
+
+# -----------------------------
+# IGNORAR CONFIGURACIONES DE IDE
+# -----------------------------
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# -----------------------------
+# IGNORAR ARCHIVOS DEL SISTEMA
+# -----------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# -----------------------------
+# OTROS ARCHIVOS TEMPORALES
+# -----------------------------
+*.log
+*.tmp
+*.swp
